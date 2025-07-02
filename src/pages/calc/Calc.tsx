@@ -11,11 +11,11 @@ export default function Calc() {
             <Text style={styles.expression}>22 + 33 =</Text>
             <Text style={styles.result}>55</Text>
           <View style={styles.calcButtonRow}>
-          <CalcButton title="MC"         action={onButtonPress} />
-          <CalcButton title="MR"         action={onButtonPress} />
-          <CalcButton title="M+"         action={onButtonPress} />
-          <CalcButton title="M-"         action={onButtonPress} />
-          <CalcButton title="MS"         action={onButtonPress} />
+          <CalcButton title="MC" type="memory"  action={onButtonPress} />
+          <CalcButton title="MR" type="memory"  action={onButtonPress} />
+          <CalcButton title="M+" type="memory"  action={onButtonPress} />
+          <CalcButton title="M-" type="memory"  action={onButtonPress} />
+          <CalcButton title="MS" type="memory"  action={onButtonPress} />
         </View>
         <View style={styles.calcButtonRow}>
           <CalcButton title={"\u0025"}   action={onButtonPress}/>
@@ -30,28 +30,28 @@ export default function Calc() {
           <CalcButton title={"\u00F7"}   action={onButtonPress}/>
         </View>
         <View style={styles.calcButtonRow}>
-          <CalcButton title="7"         action={onButtonPress}/>
-          <CalcButton title="8"         action={onButtonPress}/>
-          <CalcButton title="9"         action={onButtonPress}/>
-          <CalcButton title={"\u00D7"}  action={onButtonPress}/>
+          <CalcButton title="7"        type="digit"  action={onButtonPress}/>
+          <CalcButton title="8"        type="digit"  action={onButtonPress}/>
+          <CalcButton title="9"        type="digit"  action={onButtonPress}/>
+          <CalcButton title={"\u00D7"}               action={onButtonPress}/>
         </View>
         <View style={styles.calcButtonRow}>
-          <CalcButton title="4"         action={onButtonPress}/>
-          <CalcButton title="5"         action={onButtonPress}/>
-          <CalcButton title="6"         action={onButtonPress}/>
-          <CalcButton title="-"         action={onButtonPress}/>
+          <CalcButton title="4"  type="digit"    action={onButtonPress}/>
+          <CalcButton title="5"  type="digit"    action={onButtonPress}/>
+          <CalcButton title="6"  type="digit"    action={onButtonPress}/>
+          <CalcButton title="-"                  action={onButtonPress}/>
         </View>
         <View style={styles.calcButtonRow}>
-          <CalcButton title="1"         action={onButtonPress}/>
-          <CalcButton title="2"         action={onButtonPress}/>
-          <CalcButton title="3"         action={onButtonPress}/>
-          <CalcButton title="+"         action={onButtonPress}/>
+          <CalcButton title="1"  type="digit"    action={onButtonPress}/>
+          <CalcButton title="2"  type="digit"    action={onButtonPress}/>
+          <CalcButton title="3"  type="digit"    action={onButtonPress}/>
+          <CalcButton title="+"                  action={onButtonPress}/>
         </View>
         <View style={styles.calcButtonRow}>
-          <CalcButton title="+/-"         action={onButtonPress}/>
-          <CalcButton title="0"        action={onButtonPress}/>
-          <CalcButton title=","         action={onButtonPress}/>
-          <CalcButton title={"="} action={onButtonPress}/>
+          <CalcButton title="+/-"  type="digit"  action={onButtonPress}/>
+          <CalcButton title="0"    type="digit"  action={onButtonPress}/>
+          <CalcButton title=","    type="digit"  action={onButtonPress}/>
+          <CalcButton title={"="}  type="equal"  action={onButtonPress}/>
         </View>
     </View>;
 }
@@ -64,10 +64,19 @@ type CalcButtonData = {
   action: (title:string, type?:string)  => any;
 };
 
-function CalcButton({title, type, action}: CalcButtonData) {
-    return <TouchableOpacity onPress={() => action(title, type)} style={styles.calcButton}>
-        <Text style={styles.calcButtonText}>{title}</Text>
-    </TouchableOpacity>;
+function CalcButton({ title, type, action }: CalcButtonData) {
+  const buttonStyle = [
+    styles.calcButton,
+    type === 'equal' && styles.equalButton,
+    type === 'memory' && styles.memoryButton,
+    type === 'digit' && styles.digitButton,
+  ];
+
+  return (
+    <TouchableOpacity onPress={() => action(title, type)} style={buttonStyle}>
+      <Text style={styles.calcButtonText}>{title}</Text>
+    </TouchableOpacity>
+  );
 }
 
 
@@ -121,5 +130,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     paddingHorizontal: 3,
-  }
+  },
+  equalButton: {
+  backgroundColor: '#2296f3',
+  },
+  memoryButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    color: '#ccc',
+  },
+  digitButton: {
+  backgroundColor: '#3b3b3b',
+},
 });
